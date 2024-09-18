@@ -82,7 +82,7 @@ const Register = () => {
 
     return (
         <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 2 }} className="relative py-3 sm:max-w-xl sm:mx-auto">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="relative py-3 sm:max-w-xl sm:mx-auto">
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-sky-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
                 <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20 mx-2 md:mx-0 rounded-md">
                     <div className="max-w-md mx-auto">
@@ -91,10 +91,10 @@ const Register = () => {
                         {errors.api && <p className="text-red-500">{errors.api}</p>}
                         {errors.image && <p className="text-red-500">{errors.image}</p>}
                         <div className="divide-y divide-gray-200">
-                            <form onSubmit={handleSubmit} className="py-6 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                            <form onSubmit={handleSubmit} className="py-5 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                                 <div className="relative flex justify-center items-center">
                                     <div className="relative h-24 w-24 rounded-full">
-                                        <img src={formData.image} id="profile" alt="profile" className="w-full h-full object-fill -ml-7 md:-ml-1 rounded-md border border-solid" />
+                                        <img src={formData.image} id="profile" alt="profile" className="w-full h-full object-fill -ml-10 md:-ml-1 rounded-md border border-solid" />
                                         <input type="file" accept="image/*" className="absolute top-0 w-full h-full opacity-0 cursor-pointer z-10" onChange={handleProfileUpdate} />
                                     </div>
                                     <div className="relative">
@@ -171,7 +171,7 @@ const Register = () => {
                         </div>
                     </div>
                     <div className="w-full flex justify-center">
-                        <p className="w-full">Already have an account <Link to="/login" className="text-sky-500 font-semibold">Login</Link> </p>
+                        <p className="w-full">Already have an account <Link to="/login" onClick={() => setErrors({})} className="text-sky-500 font-semibold">Login</Link> </p>
                     </div>
                 </div>
             </motion.div>
