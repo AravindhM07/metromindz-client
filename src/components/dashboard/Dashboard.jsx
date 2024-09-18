@@ -183,8 +183,8 @@ const Dashboard = () => {
                             </div>
                             <div className='relative mt-7 w-full'>
                                 <ul className='h-full min-h-10 flex gap-5 items-center bg-[#59B2E8] text-white px-6 rounded-md'>
-                                    <li className='cursor-pointer' onClick={() => setIsCreateActive(true)}>Created ({tasksList?.length && tasksList.filter(tasks => !tasks.isCompleted)?.length || 0})</li>
-                                    <li className='cursor-pointer text-gray-200' onClick={() => setIsCreateActive(false)}>Completed ({tasksList?.length && tasksList.filter(tasks => tasks.isCompleted)?.length || 0})</li>
+                                    <li className={`cursor-pointer ${!isCreateActive && "text-gray-200"}`} onClick={() => setIsCreateActive(true)}>Created ({tasksList?.length && tasksList.filter(tasks => !tasks.isCompleted)?.length || 0})</li>
+                                    <li className={`cursor-pointer ${isCreateActive && "text-gray-200"}`} onClick={() => setIsCreateActive(false)}>Completed ({tasksList?.length && tasksList.filter(tasks => tasks.isCompleted)?.length || 0})</li>
                                 </ul>
                                 <div className="w-full md:w-[99%] min-h-[75px] py-8 leading-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -209,7 +209,7 @@ const Dashboard = () => {
                                                                 </div>
                                                                 <div className='flex gap-3'>
                                                                     <button className='bg-transparent text-[14px] text-blue-600 font-[500]'>Priority</button>
-                                                                    <button className={`bg-transparent text-[14px] text-white p-1 rounded-md min-w-[80px] max-h-[25px] flex items-center justify-center mt-1 ${item?.priority === "Low" ? "bg-[#00BFA1]" : item?.priority === "Medium" ? "bg-[#EBAF00]" : "bg-[#FF807A]"} font-[500]`}>{item?.priority}</button>
+                                                                    <button className={`bg-transparent text-[14px] text-white p-1 rounded-md min-w-[80px] max-h-[25px] flex items-center justify-center mt-1 font-[500]`} style={{ background: `${item?.priority === "Low" ? "#00BFA1" : item?.priority === "Medium" ? "#EBAF00" : "#FF807A"}` }}>{item?.priority}</button>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -12,14 +12,13 @@ const RoutesConfig = () => {
 
     const currentUser = useSelector(state => state.user.currentUser);
     const isAuthenticated = () => currentUser !== null;
-    const isUnAuthenticated = () => currentUser === null;
 
     return (
         <Router>
             <Routes>
                 <Route path="/" element={RoutesMiddleware(Dashboard, isAuthenticated)()} />
-                <Route path="/login" element={RoutesMiddleware(LogIn, isUnAuthenticated)()} />
-                <Route path="/register" element={RoutesMiddleware(Register, isUnAuthenticated)()} />
+                {!currentUser && <><Route path="/login" element={<LogIn />} />
+                    <Route path="/register" element={<Register />} /> </>}
                 <Route path="/*" element={<NotFound />} />
             </Routes>
         </Router>
