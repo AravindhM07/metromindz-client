@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaBars } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
-import { logoutCurrentUser } from '../../redux/slices/userSlices';
+import { logoutCurrentUser } from '../../redux/slices/userSlice';
 import AddTasks from '../../helper/AddTasks';
 import images from '../../helper/ImageHelper';
 

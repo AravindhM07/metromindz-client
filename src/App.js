@@ -3,7 +3,7 @@ import RoutesConfig from './routes/RoutesConfig';
 
 // Redux
 import { useDispatch } from 'react-redux';
-import { fetchCurrentUser } from './redux/slices/userSlices';
+import { fetchCurrentUser } from './redux/slices/userSlice';
 
 function App() {
 

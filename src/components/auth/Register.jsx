@@ -3,7 +3,7 @@ import Profile from "../../assets/profile.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { createUser, fetchCurrentUser } from "../../redux/slices/userSlices";
+import { createUser, fetchCurrentUser } from "../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Register = () => {

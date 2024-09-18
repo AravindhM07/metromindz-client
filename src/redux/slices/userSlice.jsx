@@ -53,7 +53,6 @@ export const logoutCurrentUser = createAsyncThunk(
 const userSlice = createSlice({
     name: 'user',
     initialState: {
-        formData: null,
         currentUser: null,
         status: 'idle', // idle | loading | succeeded | failed
         error: null,

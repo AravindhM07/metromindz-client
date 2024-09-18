@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { signInUser, fetchCurrentUser } from "../../redux/slices/userSlices";
+import { signInUser, fetchCurrentUser } from "../../redux/slices/userSlice";
 
 const Login = () => {
 

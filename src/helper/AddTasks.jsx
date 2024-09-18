@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import { IoClose, IoCalendarOutline } from "react-icons/io5";
+import { createTasks } from "../redux/slices/taskSlice";
+import { useDispatch } from "react-redux";
 
 const AddTasks = ({ closeModal }) => {
+
+    const dispatch = useDispatch();
     const [taskDetails, setTaskDetails] = useState({
-        taskName: '',
+        title: '',
         details: '',
         date: '',
-        priority: 'Medium',
+        priority: 'Low',
     });
     const [errors, setErrors] = useState({});
 
     const validateForm = () => {
         const newErrors = {};
-        if (!taskDetails.taskName) newErrors.taskName = "Task Name is required";
+        if (!taskDetails.title) newErrors.title = "Task Name is required";
         if (!taskDetails.date) newErrors.date = "Date is required";
         if (!taskDetails.priority) newErrors.priority = "Priority is required";
         setErrors(newErrors);
@@ -24,9 +28,9 @@ const AddTasks = ({ closeModal }) => {
         if (!validateForm()) return;
 
         try {
-            console.log('taskData -->', taskDetails);
+            await dispatch(createTasks(taskDetails));
             setTaskDetails({
-                taskName: '',
+                title: '',
                 details: '',
                 date: '',
                 priority: 'Medium',
@@ -60,13 +64,13 @@ const AddTasks = ({ closeModal }) => {
                             </label>
                             <input
                                 type='text'
-                                name='taskName'
+                                name='title'
                                 className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-sky-500'
-                                value={taskDetails.taskName}
+                                value={taskDetails.title}
                                 onChange={handleChange}
                                 required
                             />
-                            {errors.taskName && <p className="text-red-500 text-sm">{errors.taskName}</p>}
+                            {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
                         </div>
 
                         <div className='mb-4'>
