@@ -235,7 +235,7 @@ const Dashboard = () => {
                                                                 </div>
                                                                 <div className='flex gap-3'>
                                                                     <button className='bg-transparent text-[14px] text-blue-600 font-[500]'>Priority</button>
-                                                                    <button className={`bg-transparent text-[14px] text-white p-1 rounded-md min-w-[80px] max-h-[25px] flex items-center justify-center mt-1 ${item?.priority === "Low" ? "bg-[#00BFA1]" : item?.priority === "Medium" ? "bg-[#EBAF00]" : "bg-[#FF807A]"} font-[500]`}>{item?.priority}</button>
+                                                                    <button className={`bg-transparent text-[14px] text-white p-1 rounded-md min-w-[80px] max-h-[25px] flex items-center justify-center mt-1 font-[500]`} style={{ background: `${item?.priority === "Low" ? "#00BFA1" : item?.priority === "Medium" ? "#EBAF00" : "#FF807A"}` }}>{item?.priority}</button>
                                                                 </div>
                                                             </div>
                                                         </div>
