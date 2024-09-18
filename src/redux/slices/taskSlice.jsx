@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { createTask, fetchTasks } from '../services/taskServices';
+import { createTask, fetchTasks, deleteTask } from '../services/taskServices';
 
 export const createTasks = createAsyncThunk(
     'task/createTask',
@@ -18,6 +18,18 @@ export const fetchTasksList = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await fetchTasks();
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const deleteRequest = createAsyncThunk(
+    'task/deleteTask',
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await deleteTask(id);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -53,6 +65,17 @@ const userSlice = createSlice({
                 state.tasksList = action.payload;
             })
             .addCase(fetchTasksList.rejected, (state, action) => {
+                state.status = 'auth_failed';
+                state.error = action.payload;
+            })
+            .addCase(deleteRequest.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(deleteRequest.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.tasksList = action.payload;
+            })
+            .addCase(deleteRequest.rejected, (state, action) => {
                 state.status = 'auth_failed';
                 state.error = action.payload;
             })

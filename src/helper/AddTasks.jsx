@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IoClose, IoCalendarOutline } from "react-icons/io5";
-import { createTasks } from "../redux/slices/taskSlice";
+import { createTasks, fetchTasksList } from "../redux/slices/taskSlice";
 import { useDispatch } from "react-redux";
 
 const AddTasks = ({ closeModal }) => {
@@ -35,6 +35,7 @@ const AddTasks = ({ closeModal }) => {
                 date: '',
                 priority: 'Medium',
             });
+            dispatch(fetchTasksList());
             closeModal();
         } catch (error) {
             console.error('Error creating task:', error);

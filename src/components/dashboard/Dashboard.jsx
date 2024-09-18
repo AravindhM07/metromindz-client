@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import AddTasks from '../../helper/AddTasks';
 import images from '../../helper/ImageHelper';
-import { fetchTasksList } from '../../redux/slices/taskSlice';
+import { fetchTasksList, deleteRequest } from '../../redux/slices/taskSlice';
 import { logoutCurrentUser } from '../../redux/slices/userSlice';
 
 const Dashboard = () => {
@@ -52,6 +52,37 @@ const Dashboard = () => {
                 {isOpen && (
                     <ul className="absolute right-0 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg text-gray-700" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}                >
                         <li className="hover:bg-gray-100 px-4 py-2 cursor-pointer" onClick={() => { navigate("/login"); dispatch(logoutCurrentUser()) }}>Logout</li>
+                    </ul>
+                )}
+            </div>
+        );
+    };
+
+    const CardOptions = ({ taskId }) => {
+
+        const [isOpen, setIsOpen] = React.useState(false);
+        let closeTimeout;
+
+        const handleMouseEnter = () => {
+            if (closeTimeout) {
+                clearTimeout(closeTimeout);
+            }
+            setIsOpen(true);
+        };
+
+        const handleMouseLeave = () => {
+            closeTimeout = setTimeout(() => {
+                setIsOpen(false);
+            }, 300);
+        };
+
+        return (
+            <div className={`${currentUser ? 'block' : 'hidden'} relative`}>
+                <span className='w-5 h-5 flex items-center justify-center text-4xl -mt-3 cursor-pointer text-[rgba(0,0,0,0.5)]' onClick={() => setIsOpen(!isOpen)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>...</span>
+                {isOpen && (
+                    <ul className="absolute right-0 mt-2 w-[100px] bg-white border border-gray-200 rounded-lg shadow-lg text-gray-700" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+                        <li className="hover:bg-gray-100 py-1 px-3 cursor-pointer text-[12px]" onClick={() => { navigate("/login"); dispatch(logoutCurrentUser()) }}>Edit</li>
+                        <li className="hover:bg-gray-100 py-1 px-3 cursor-pointer text-[12px]" onClick={() => { dispatch(deleteRequest(taskId)); dispatch(fetchTasksList()) }}>Delete</li>
                     </ul>
                 )}
             </div>
@@ -162,7 +193,7 @@ const Dashboard = () => {
                                                         <div className="bg-white shadow-md rounded-md p-4" key={index}>
                                                             <div className='flex justify-between items-center'>
                                                                 <h1 className='text-[#004490] font-[500]'>{item?.title}</h1>
-                                                                <span className='w-5 h-5 flex items-center justify-center text-4xl -mt-3 cursor-pointer text-[rgba(0,0,0,0.5)]'>...</span>
+                                                                <CardOptions taskId={item?._id} />
                                                             </div>
                                                             <p className='text-[12px] text-[#A3A3A3]'>Details: {item?.details}</p>
                                                             <p className="flex gap-3 items-center mt-2 text-[13px] text-gray-400 font-[500]">

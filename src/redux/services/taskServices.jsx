@@ -13,4 +13,10 @@ const fetchTasks = async () => {
     return response;
 };
 
-export { createTask, fetchTasks };
+const deleteTask = async (id) => {
+    const requestUrl = `${APIENDPOINT}/task/deleteRequest?id=${id}`;
+    const response = await axios.get(requestUrl, { withCredentials: true });
+    return response;
+};
+
+export { createTask, fetchTasks, deleteTask };
