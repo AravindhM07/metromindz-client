@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoClose, IoCalendarOutline } from "react-icons/io5";
-import { createTasks, fetchTasksList } from "../redux/slices/taskSlice";
+import { handleTasks, fetchTasksList } from "../redux/slices/taskSlice";
 import { useDispatch } from "react-redux";
 
-const AddTasks = ({ closeModal }) => {
+const AddTasks = ({ closeModal, selectedCard }) => {
 
     const dispatch = useDispatch();
     const [taskDetails, setTaskDetails] = useState({
@@ -28,7 +28,11 @@ const AddTasks = ({ closeModal }) => {
         if (!validateForm()) return;
 
         try {
-            await dispatch(createTasks(taskDetails));
+            const payload = {
+                id: selectedCard?._id,
+                ...taskDetails
+            };
+            await dispatch(handleTasks(payload));
             setTaskDetails({
                 title: '',
                 details: '',
@@ -50,11 +54,30 @@ const AddTasks = ({ closeModal }) => {
         }));
     };
 
+    useEffect(() => {
+        if (Object.keys(selectedCard).length) {
+            const dateString = selectedCard.date;
+            let formattedDate = '';
+
+            if (dateString) {
+                const dateObject = new Date(dateString);
+                formattedDate = dateObject.toISOString().split('T')[0];
+            }
+
+            setTaskDetails({
+                title: selectedCard.title,
+                details: selectedCard.details,
+                date: formattedDate,
+                priority: selectedCard.priority,
+            });
+        }
+    }, [selectedCard]);
+
     return (
         <div className='flex justify-center items-center fixed w-full h-full top-0 left-0 bg-[#ffffffa3] z-10 backdrop-blur-0 text-[#464255]'>
             <div className='absolute w-[90%] h-auto bg-white shadow rounded-md p-7 overflow-y-auto'>
                 <div className='flex justify-between items-center'>
-                    <h2 className='font-bold text-lg text-[#0000009c]'>Create Task</h2>
+                    <h2 className='font-bold text-lg text-[#0000009c]'>{Object.keys(selectedCard).length ? "Update" : "Create"} Task</h2>
                     <button onClick={closeModal}><IoClose className='text-lg' /></button>
                 </div>
                 <div className='mt-5'>

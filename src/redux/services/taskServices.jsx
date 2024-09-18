@@ -1,8 +1,8 @@
 import axios from "axios";
 const APIENDPOINT = process.env.REACT_APP_API_URL;
 
-const createTask = async (data) => {
-    const requestUrl = `${APIENDPOINT}/task/createTask`;
+const handleTask = async (data) => {
+    const requestUrl = `${APIENDPOINT}/task/handleTask`;
     const response = await axios.post(requestUrl, data, { withCredentials: true });
     return response;
 };
@@ -19,4 +19,4 @@ const deleteTask = async (id) => {
     return response;
 };
 
-export { createTask, fetchTasks, deleteTask };
+export { handleTask, fetchTasks, deleteTask };

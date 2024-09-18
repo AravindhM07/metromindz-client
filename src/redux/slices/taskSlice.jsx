@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { createTask, fetchTasks, deleteTask } from '../services/taskServices';
+import { handleTask, fetchTasks, deleteTask } from '../services/taskServices';
 
-export const createTasks = createAsyncThunk(
+export const handleTasks = createAsyncThunk(
     'task/createTask',
     async (taskData, { rejectWithValue }) => {
         try {
-            const response = await createTask(taskData);
+            const response = await handleTask(taskData);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -47,13 +47,13 @@ const userSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(createTasks.pending, (state) => {
+            .addCase(handleTasks.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(createTasks.fulfilled, (state, action) => {
+            .addCase(handleTasks.fulfilled, (state, action) => {
                 state.status = 'succeeded';
             })
-            .addCase(createTasks.rejected, (state, action) => {
+            .addCase(handleTasks.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload;
             })

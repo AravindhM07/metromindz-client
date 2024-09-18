@@ -17,6 +17,7 @@ const Dashboard = () => {
     const tasksList = useSelector(state => state.task.tasksList);
     const [activePage, setActivePage] = useState('dashboard');
     const [isCreateActive, setIsCreateActive] = useState(true);
+    const [selectedCard, setSelectedCard] = useState({});
     const [isTaskModalOpened, setIsTaskModalOpened] = useState(false);
 
     const handleSideBarPreview = () => {
@@ -58,7 +59,7 @@ const Dashboard = () => {
         );
     };
 
-    const CardOptions = ({ taskId }) => {
+    const CardOptions = ({ taskData }) => {
 
         const [isOpen, setIsOpen] = React.useState(false);
         let closeTimeout;
@@ -81,8 +82,8 @@ const Dashboard = () => {
                 <span className='w-5 h-5 flex items-center justify-center text-4xl -mt-3 cursor-pointer text-[rgba(0,0,0,0.5)]' onClick={() => setIsOpen(!isOpen)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>...</span>
                 {isOpen && (
                     <ul className="absolute right-0 mt-2 w-[100px] bg-white border border-gray-200 rounded-lg shadow-lg text-gray-700" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
-                        <li className="hover:bg-gray-100 py-1 px-3 cursor-pointer text-[12px]" onClick={() => { navigate("/login"); dispatch(logoutCurrentUser()) }}>Edit</li>
-                        <li className="hover:bg-gray-100 py-1 px-3 cursor-pointer text-[12px]" onClick={() => { dispatch(deleteRequest(taskId)); dispatch(fetchTasksList()) }}>Delete</li>
+                        <li className="hover:bg-gray-100 py-1 px-3 cursor-pointer text-[12px]" onClick={() => { setSelectedCard(taskData); setIsTaskModalOpened(true) }}>Edit</li>
+                        <li className="hover:bg-gray-100 py-1 px-3 cursor-pointer text-[12px]" onClick={() => { dispatch(deleteRequest(taskData?._id)); dispatch(fetchTasksList()) }}>Delete</li>
                     </ul>
                 )}
             </div>
@@ -90,6 +91,7 @@ const Dashboard = () => {
     };
 
     const handleTaskModal = () => {
+        setSelectedCard({});
         setIsTaskModalOpened(!isTaskModalOpened);
     };
 
@@ -193,7 +195,7 @@ const Dashboard = () => {
                                                         <div className="bg-white shadow-md rounded-md p-4" key={index}>
                                                             <div className='flex justify-between items-center'>
                                                                 <h1 className='text-[#004490] font-[500]'>{item?.title}</h1>
-                                                                <CardOptions taskId={item?._id} />
+                                                                <CardOptions taskData={item} />
                                                             </div>
                                                             <p className='text-[12px] text-[#A3A3A3]'>Details: {item?.details}</p>
                                                             <p className="flex gap-3 items-center mt-2 text-[13px] text-gray-400 font-[500]">
@@ -248,7 +250,7 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
-            {isTaskModalOpened && <AddTasks closeModal={handleTaskModal} />}
+            {isTaskModalOpened && <AddTasks closeModal={handleTaskModal} selectedCard={selectedCard} />}
         </React.Fragment>
     )
 };
