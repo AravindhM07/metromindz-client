@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutCurrentUser } from '../../redux/slices/userSlices';
 
-// Icons import
 import HomeIcon from '../../assets/home.png';
 import HomeActiveIcon from '../../assets/home_active.png';
 import TaskIcon from '../../assets/add_task.png';
@@ -34,7 +33,7 @@ const Dashboard = () => {
     useEffect(() => {
         console.log('status ', status)
         if (status === "logout_succeeded") {
-            window.location.href = "/login";
+            navigate("/login");
         }
     }, [status]);
 
@@ -60,7 +59,7 @@ const Dashboard = () => {
         return (
             <div className={`${currentUser ? 'block' : 'hidden'} relative`}>
                 <span className='inline-block w-11 h-11 rounded-xl bg-gray-100 cursor-pointer' onClick={() => setIsOpen(!isOpen)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
-                    <img src={currentUser?.profile} alt="profile" className='aspect-square object-cover rounded-xl' />
+                    <img src={currentUser?.profile} alt="profile" className='aspect-square object-contain rounded-xl' />
                 </span>
 
 
@@ -120,7 +119,7 @@ const Dashboard = () => {
                                         <p>Total Tasks</p>
                                         <h2 className='font-bold text-2xl'>200</h2>
                                     </div>
-                                    <img src={LeaderBoardIcon} alt="leaderboard-icon" className='aspect-square object-contain w-10 h-10' />
+                                    <img src={LeaderBoardIcon} alt="leaderboard-icon" className='aspect-square object-contain min-w-10 min-h-10' />
                                 </motion.div>
                                 <motion.div className="bg-white w-[90%] md:w-[300px] py-2 px-5 rounded-md flex justify-between items-center min-h-[120px] cursor-pointer hover:bg-gray-200 transition duration-300 ease-in-out" whileHover={{ scale: 1.05 }} >
                                     <div>

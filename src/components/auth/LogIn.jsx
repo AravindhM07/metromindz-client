@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { signInUser } from "../../redux/slices/userSlices";
+import { signInUser, fetchCurrentUser } from "../../redux/slices/userSlices";
 
 const Login = () => {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const apiStatus = useSelector(state => state.user.status);
     const apiError = useSelector(state => state.user.error);
     const [formData, setFormData] = useState({
@@ -55,8 +56,8 @@ const Login = () => {
 
     useEffect(() => {
         if (apiStatus === "signin_succeeded") {
-            setMessage("Login successful!");
-            window.location.href = "/";
+            dispatch(fetchCurrentUser());
+            navigate("/");
         } else if (apiStatus === "auth_failed") {
             setErrors({ api: apiError?.message });
         }
@@ -64,9 +65,9 @@ const Login = () => {
 
     return (
         <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-            <h1 className="absolute md:hidden top-7 text-center w-full font-bold text-2xl text-[#464255]">Task Management Hub</h1>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="relative py-3 sm:max-w-xl sm:mx-auto">
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-sky-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
+                <h1 className="absolute md:hidden -top-20 text-center w-full font-bold text-2xl text-[#464255]">Task Management Hub</h1>
                 <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20 mx-2 md:mx-0 rounded-md">
                     <div className="max-w-md mx-auto">
                         <div> <h1 className="text-2xl font-semibold">Login</h1> </div>
