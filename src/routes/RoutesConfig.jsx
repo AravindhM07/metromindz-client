@@ -17,8 +17,8 @@ const RoutesConfig = () => {
         <Router>
             <Routes>
                 <Route path="/" element={RoutesMiddleware(Dashboard, isAuthenticated)()} />
-                {!currentUser && <><Route path="/login" element={<LogIn />} />
-                    <Route path="/register" element={<Register />} /> </>}
+                <Route path="/login" element={<LogIn />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="/*" element={<NotFound />} />
             </Routes>
         </Router>
