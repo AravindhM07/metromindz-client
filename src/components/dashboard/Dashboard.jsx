@@ -5,17 +5,7 @@ import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutCurrentUser } from '../../redux/slices/userSlices';
 import AddTasks from '../../helper/AddTasks';
-
-import HomeIcon from '../../assets/home.png';
-import HomeActiveIcon from '../../assets/home_active.png';
-import TaskIcon from '../../assets/add_task.png';
-import TaskActiveIcon from '../../assets/add_task_active.png';
-import MessageIcon from '../../assets/notification_message.png';
-import BellIcon from '../../assets/notification_bell.png';
-import LeaderBoardIcon from '../../assets/leaderboard.png';
-import HandshakeIcon from '../../assets/handshake.png';
-import UserTemplate from '../../assets/userTemplete.png';
-import AddBod from '../../assets/add_box.png';
+import images from '../../helper/ImageHelper';
 
 const Dashboard = () => {
 
@@ -85,12 +75,12 @@ const Dashboard = () => {
                         </motion.li>
                         <motion.li className='min-h-10 flex justify-start items-center w-[70%] mx-[15%] mt-3' whileTap={{ scale: 0.9 }} onClick={() => handleSideBarPreview()} >
                             <span className={`cursor-pointer flex gap-2 ${activePage === 'dashboard' && 'text-sky-400'}`} onClick={() => setActivePage('dashboard')} >
-                                <img src={activePage === 'dashboard' ? HomeActiveIcon : HomeIcon} alt="home-icon" className='aspect-square w-6' /> Dashboard
+                                <img src={activePage === 'dashboard' ? images.HomeActiveIcon : images.HomeIcon} alt="home-icon" className='aspect-square w-6' /> Dashboard
                             </span>
                         </motion.li>
                         <motion.li className='min-h-10 flex justify-start items-center w-[70%] mx-[15%]' whileTap={{ scale: 0.9 }} onClick={() => handleSideBarPreview()} >
                             <span className={`cursor-pointer flex gap-2 ${activePage === 'tasks' && 'text-sky-400'}`} onClick={() => setActivePage('tasks')} >
-                                <img src={activePage === 'tasks' ? TaskActiveIcon : TaskIcon} alt="home-icon" className='aspect-square w-6' /> Tasks
+                                <img src={activePage === 'tasks' ? images.TaskActiveIcon : images.TaskIcon} alt="home-icon" className='aspect-square w-6' /> Tasks
                             </span>
                         </motion.li>
                     </ul>
@@ -103,10 +93,10 @@ const Dashboard = () => {
                         </motion.div>
                         <motion.div className='flex gap-2 md:gap-6 items-center' initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} >
                             <span className='inline-block w-11 h-11 cursor-pointer' >
-                                <img src={MessageIcon} alt="message-icon" className='aspect-square object-cover' />
+                                <img src={images.MessageIcon} alt="message-icon" className='aspect-square object-cover' />
                             </span>
                             <span className='inline-block w-11 h-11 rounded-lg cursor-pointer' >
-                                <img src={BellIcon} alt="bell-icon" className='aspect-square object-cover' />
+                                <img src={images.BellIcon} alt="bell-icon" className='aspect-square object-cover' />
                             </span>
                             <Profile currentUser={currentUser} />
                             <span className='flex md:hidden justify-center items-center w-11 h-11 md:w-14 md:h-14 rounded-lg cursor-pointer bg-gray-100' onClick={() => handleSideBarPreview()} >
@@ -123,14 +113,14 @@ const Dashboard = () => {
                                             <p>Total Tasks</p>
                                             <h2 className='font-bold text-2xl'>200</h2>
                                         </div>
-                                        <img src={LeaderBoardIcon} alt="leaderboard-icon" className='aspect-square object-contain min-w-10 min-h-10' />
+                                        <img src={images.LeaderBoardIcon} alt="leaderboard-icon" className='aspect-square object-contain min-w-10 min-h-10' />
                                     </motion.div>
                                     <motion.div className="bg-white w-[90%] md:w-[300px] py-2 px-5 rounded-md flex justify-between items-center min-h-[120px] cursor-pointer hover:bg-gray-200 transition duration-300 ease-in-out" whileHover={{ scale: 1.05 }} >
                                         <div>
                                             <p>Completed</p>
                                             <h2 className='font-bold text-2xl'>20</h2>
                                         </div>
-                                        <img src={HandshakeIcon} alt="handshake-icon" className='aspect-square object-contain w-10 h-10' />
+                                        <img src={images.HandshakeIcon} alt="handshake-icon" className='aspect-square object-contain w-10 h-10' />
                                     </motion.div>
                                 </div>
                             </motion.div>
@@ -143,10 +133,10 @@ const Dashboard = () => {
                                 <div className='p-3 leading-5 md:leading-10 py-5'>
                                     <h1 className='font-[500] text-lg'>Today's Task</h1>
                                     <p className='text-[12px] text-[#A3A3A3]'>Check Your daily Tasks and Schedule</p>
-                                    <button className='mt-2 min-h-[40px] bg-[#59B2E8] hover:bg-sky-400 transition duration-300 ease-in-out min-w-[120px] rounded-md text-white flex gap-4 justify-center items-center' onClick={() => handleTaskModal()}>Add New <img src={AddBod} alt="add-box" className='w-4' /> </button>
+                                    <button className='mt-2 min-h-[40px] bg-[#59B2E8] hover:bg-sky-400 transition duration-300 ease-in-out min-w-[120px] rounded-md text-white flex gap-4 justify-center items-center' onClick={() => handleTaskModal()}>Add New <img src={images.AddBox} alt="add-box" className='w-4' /> </button>
                                 </div>
                                 <div className='p-2'>
-                                    <img src={UserTemplate} alt="user-template" className='w-[300px] h-[150px] cursor-pointer hover:border transition duration-200' />
+                                    <img src={images.UserTemplate} alt="user-template" className='w-[300px] h-[150px] cursor-pointer hover:border transition duration-200' />
                                 </div>
                             </div>
                             <div className='relative mt-7 w-full'>
