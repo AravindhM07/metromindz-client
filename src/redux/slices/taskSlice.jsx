@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { createTask } from '../services/taskServices';
+import { createTask, fetchTasks } from '../services/taskServices';
 
 export const createTasks = createAsyncThunk(
-    'task/create',
+    'task/createTask',
     async (taskData, { rejectWithValue }) => {
         try {
             const response = await createTask(taskData);
@@ -13,10 +13,23 @@ export const createTasks = createAsyncThunk(
     }
 );
 
+export const fetchTasksList = createAsyncThunk(
+    'task/fetchTasks',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await fetchTasks();
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
 const userSlice = createSlice({
-    name: 'user',
+    name: 'task',
     initialState: {
         status: 'idle',
+        tasksList: [],
         error: null,
     },
     reducers: {},
@@ -29,9 +42,20 @@ const userSlice = createSlice({
                 state.status = 'succeeded';
             })
             .addCase(createTasks.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
+            })
+            .addCase(fetchTasksList.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchTasksList.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.tasksList = action.payload;
+            })
+            .addCase(fetchTasksList.rejected, (state, action) => {
                 state.status = 'auth_failed';
                 state.error = action.payload;
-            });
+            })
     }
 });
 

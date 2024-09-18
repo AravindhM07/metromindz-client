@@ -8,6 +8,7 @@ import LeaderBoardIcon from '../assets/leaderboard.png';
 import HandshakeIcon from '../assets/handshake.png';
 import UserTemplate from '../assets/userTemplete.png';
 import AddBox from '../assets/add_box.png';
+import EventNote from '../assets/event_note.png';
 
 const images = {
     HomeIcon,
@@ -20,6 +21,7 @@ const images = {
     HandshakeIcon,
     UserTemplate,
     AddBox,
+    EventNote
 };
 
 export default images;

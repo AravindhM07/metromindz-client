@@ -15,8 +15,3 @@
 #aside-navContainer.active {
   width: 230px !important;
 }
-
-input[type='date']::-webkit-calendar-picker-indicator {
-  display: none;
-  -webkit-appearance: none;
-}

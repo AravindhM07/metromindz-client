@@ -50,7 +50,7 @@ const AddTasks = ({ closeModal }) => {
     };
 
     return (
-        <div className='flex justify-center items-center fixed w-full h-full top-0 left-0 bg-[#ffffff4f] z-10 backdrop-blur-0 text-[#464255]'>
+        <div className='flex justify-center items-center fixed w-full h-full top-0 left-0 bg-[#ffffffa3] z-10 backdrop-blur-0 text-[#464255]'>
             <div className='absolute w-[90%] h-auto bg-white shadow rounded-md p-7 overflow-y-auto'>
                 <div className='flex justify-between items-center'>
                     <h2 className='font-bold text-lg text-[#0000009c]'>Create Task</h2>
@@ -98,7 +98,7 @@ const AddTasks = ({ closeModal }) => {
                                         onChange={handleChange}
                                         required
                                     />
-                                    <div className='absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none'>
+                                    <div className='hidden absolute inset-y-0 right-0 pr-3 md:flex items-center pointer-events-none'>
                                         <IoCalendarOutline className='text-gray-400 bg-white' />
                                     </div>
                                     {errors.date && <p className="text-red-500 text-sm">{errors.date}</p>}
@@ -126,10 +126,10 @@ const AddTasks = ({ closeModal }) => {
 
                         <br /><hr />
                         <div className='flex justify-end space-x-3 mt-6'>
-                            <button type='submit' className='px-4 py-2 bg-green-400 text-white md:min-w-[120px] rounded-md hover:bg-green-500'>
+                            <button type='submit' className='px-4 py-2 bg-[#00BFA1] text-white md:min-w-[120px] rounded-md'>
                                 Submit
                             </button>
-                            <button type='button' className='px-4 py-2 bg-pink-600 text-white md:min-w-[120px] rounded-md hover:bg-pink-700' onClick={closeModal}>
+                            <button type='button' className='px-4 py-2 bg-[#FF807A] text-white md:min-w-[120px] rounded-md' onClick={closeModal}>
                                 Cancel
                             </button>
                         </div>

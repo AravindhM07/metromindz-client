@@ -3,16 +3,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaBars } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
-import { logoutCurrentUser } from '../../redux/slices/userSlice';
 import AddTasks from '../../helper/AddTasks';
 import images from '../../helper/ImageHelper';
+import { fetchTasksList } from '../../redux/slices/taskSlice';
+import { logoutCurrentUser } from '../../redux/slices/userSlice';
 
 const Dashboard = () => {
 
     const navigate = useNavigate();
-    const currentUser = useSelector(state => state.user.currentUser);
+    const dispatch = useDispatch();
     const status = useSelector(state => state.user.status);
+    const currentUser = useSelector(state => state.user.currentUser);
+    const tasksList = useSelector(state => state.task.tasksList);
     const [activePage, setActivePage] = useState('dashboard');
+    const [isCreateActive, setIsCreateActive] = useState(true);
     const [isTaskModalOpened, setIsTaskModalOpened] = useState(false);
 
     const handleSideBarPreview = () => {
@@ -24,7 +28,6 @@ const Dashboard = () => {
 
     const Profile = ({ currentUser }) => {
 
-        const dispatch = useDispatch();
         const [isOpen, setIsOpen] = React.useState(false);
         let closeTimeout;
 
@@ -64,6 +67,12 @@ const Dashboard = () => {
             navigate("/login");
         }
     }, [status]);
+
+    useEffect(() => {
+        if (currentUser) {
+            dispatch(fetchTasksList());
+        }
+    }, [currentUser]);
 
     return (
         <React.Fragment>
@@ -111,14 +120,14 @@ const Dashboard = () => {
                                     <motion.div className="bg-white w-[90%] md:w-[300px] py-2 px-5 rounded-md flex justify-between items-center min-h-[120px] cursor-pointer hover:bg-gray-200 transition duration-300 ease-in-out" whileHover={{ scale: 1.05 }} >
                                         <div>
                                             <p>Total Tasks</p>
-                                            <h2 className='font-bold text-2xl'>200</h2>
+                                            <h2 className='font-bold text-2xl'>{tasksList?.length || 0}</h2>
                                         </div>
                                         <img src={images.LeaderBoardIcon} alt="leaderboard-icon" className='aspect-square object-contain min-w-10 min-h-10' />
                                     </motion.div>
                                     <motion.div className="bg-white w-[90%] md:w-[300px] py-2 px-5 rounded-md flex justify-between items-center min-h-[120px] cursor-pointer hover:bg-gray-200 transition duration-300 ease-in-out" whileHover={{ scale: 1.05 }} >
                                         <div>
                                             <p>Completed</p>
-                                            <h2 className='font-bold text-2xl'>20</h2>
+                                            <h2 className='font-bold text-2xl'>{tasksList?.length && tasksList.filter(tasks => tasks.isCompleted)?.length || 0}</h2>
                                         </div>
                                         <img src={images.HandshakeIcon} alt="handshake-icon" className='aspect-square object-contain w-10 h-10' />
                                     </motion.div>
@@ -141,18 +150,66 @@ const Dashboard = () => {
                             </div>
                             <div className='relative mt-7 w-full'>
                                 <ul className='h-full min-h-10 flex gap-5 items-center bg-[#59B2E8] text-white px-6 rounded-md'>
-                                    <li className='cursor-pointer'>Created (10)</li>
-                                    <li className='cursor-pointer text-gray-200'>Completed (5)</li>
+                                    <li className='cursor-pointer' onClick={() => setIsCreateActive(true)}>Created ({tasksList?.length && tasksList.filter(tasks => !tasks.isCompleted)?.length || 0})</li>
+                                    <li className='cursor-pointer text-gray-200' onClick={() => setIsCreateActive(false)}>Completed ({tasksList?.length && tasksList.filter(tasks => tasks.isCompleted)?.length || 0})</li>
                                 </ul>
                                 <div className="w-full md:w-[99%] min-h-[75px] py-8 leading-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                        <div className="bg-white shadow-md rounded-md p-4">
-                                            <div className='flex justify-between items-center'>
-                                                <h1 className='text-[#004490] font-[500]'>5 Clients follow up to tomorrow</h1>
-                                                <span className='w-5 h-5 flex items-center justify-center text-3xl -mt-3 cursor-pointer'>...</span>
-                                            </div>
-                                            <p className='text-[12px] text-[#A3A3A3]'>Details: 5 Client follow up needs to be done.</p>
-                                        </div>
+                                        {isCreateActive ?
+                                            <React.Fragment>
+                                                {tasksList?.length && tasksList.filter(tasks => !tasks.isCompleted)?.length ? tasksList.filter(tasks => !tasks.isCompleted)?.map((item, index) => {
+                                                    return (
+                                                        <div className="bg-white shadow-md rounded-md p-4" key={index}>
+                                                            <div className='flex justify-between items-center'>
+                                                                <h1 className='text-[#004490] font-[500]'>{item?.title}</h1>
+                                                                <span className='w-5 h-5 flex items-center justify-center text-4xl -mt-3 cursor-pointer text-[rgba(0,0,0,0.5)]'>...</span>
+                                                            </div>
+                                                            <p className='text-[12px] text-[#A3A3A3]'>Details: {item?.details}</p>
+                                                            <p className="flex gap-3 items-center mt-2 text-[13px] text-gray-400 font-[500]">
+                                                                <img src={images.EventNote} alt="event-note" className="w-3 h-3" />
+                                                                {new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(item.date))}
+                                                            </p>
+                                                            <div className='flex justify-between items-center mt-3'>
+                                                                <div className='flex gap-3 items-center text-[14px] text-gray-400 font-[500]'>
+                                                                    <img src={currentUser?.profile} alt="user-profile" className='w-10 h-10 rounded-full' />
+                                                                    By {currentUser?.name}
+                                                                </div>
+                                                                <div className='flex gap-3'>
+                                                                    <button className='bg-transparent text-[14px] text-blue-600 font-[500]'>Priority</button>
+                                                                    <button className={`bg-transparent text-[14px] text-white p-1 rounded-md min-w-[80px] max-h-[25px] flex items-center justify-center mt-1 ${item?.priority === "Low" ? "bg-[#00BFA1]" : item?.priority === "Medium" ? "bg-[#EBAF00]" : "bg-[#FF807A]"} font-[500]`}>{item?.priority}</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }) : <p className='text-[15px] text-gray-500 font-[500] px-3'>No tasks have been created yet.</p>}
+                                            </React.Fragment>
+                                            : <React.Fragment>
+                                                {tasksList?.length && tasksList.filter(tasks => tasks.isCompleted)?.length ? tasksList.filter(tasks => tasks.isCompleted)?.map((item, index) => {
+                                                    return (
+                                                        <div className="bg-white shadow-md rounded-md p-4" key={index}>
+                                                            <div className='flex justify-start items-center'>
+                                                                <h1 className='text-[#004490] font-[500]'>{item?.title}</h1>
+                                                            </div>
+                                                            <p className='text-[12px] text-[#A3A3A3]'>Details: {item?.details}</p>
+                                                            <p className="flex gap-3 items-center mt-2 text-[13px] text-gray-400 font-[500]">
+                                                                <img src={images.EventNote} alt="event-note" className="w-3 h-3" />
+                                                                {new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(item.date))}
+                                                            </p>
+                                                            <div className='flex justify-between items-center mt-3'>
+                                                                <div className='flex gap-3 items-center text-[14px] text-gray-400 font-[500]'>
+                                                                    <img src={currentUser?.profile} alt="user-profile" className='w-10 h-10 rounded-full' />
+                                                                    By {currentUser?.name}
+                                                                </div>
+                                                                <div className='flex gap-3'>
+                                                                    <button className='bg-transparent text-[14px] text-blue-600 font-[500]'>Priority</button>
+                                                                    <button className={`bg-transparent text-[14px] text-white p-1 rounded-md min-w-[80px] max-h-[25px] flex items-center justify-center mt-1 ${item?.priority === "Low" ? "bg-[#00BFA1]" : item?.priority === "Medium" ? "bg-[#EBAF00]" : "bg-[#FF807A]"} font-[500]`}>{item?.priority}</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }) : <p className='text-[15px] text-gray-500 font-[500] px-3'>No tasks have been completed yet.</p>}
+                                            </React.Fragment>
+                                        }
                                     </div>
                                 </div>
                             </div>
