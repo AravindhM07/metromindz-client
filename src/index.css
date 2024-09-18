@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#aside-navContainer {
+  transition: 0.3s ease-in-out;
+}
+
+#aside-navContainer.active {
+  width: 230px !important;
+}
