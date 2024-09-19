@@ -200,7 +200,9 @@ const Dashboard = () => {
                                                             <p className='text-[12px] text-[#A3A3A3]'>Details: {item?.details}</p>
                                                             <p className="flex gap-3 items-center mt-2 text-[13px] text-gray-400 font-[500]">
                                                                 <img src={images.EventNote} alt="event-note" className="w-3 h-3" />
-                                                                {new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(item.date))}
+                                                                <span className='-mt-[2px]'>
+                                                                    {new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(item.date))}
+                                                                </span>
                                                             </p>
                                                             <div className='flex justify-between items-center mt-3'>
                                                                 <div className='flex gap-3 items-center text-[14px] text-gray-400 font-[500]'>
@@ -226,7 +228,9 @@ const Dashboard = () => {
                                                             <p className='text-[12px] text-[#A3A3A3]'>Details: {item?.details}</p>
                                                             <p className="flex gap-3 items-center mt-2 text-[13px] text-gray-400 font-[500]">
                                                                 <img src={images.EventNote} alt="event-note" className="w-3 h-3" />
-                                                                {new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(item.date))}
+                                                                <span className='-mt-[2px]'>
+                                                                    {new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(item.date))}
+                                                                </span>
                                                             </p>
                                                             <div className='flex justify-between items-center mt-3'>
                                                                 <div className='flex gap-3 items-center text-[14px] text-gray-400 font-[500]'>
