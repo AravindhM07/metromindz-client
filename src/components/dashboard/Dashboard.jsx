@@ -128,7 +128,7 @@ const Dashboard = () => {
                     </ul>
                 </aside>
                 <div className='w-[100%] md:ml-[15%] md:w-[85%] bg-gray-100'>
-                    <header className='sticky top-0 w-[100%] md:w-[99%] min-h-[75px] shadow-xl md:ml-[1%] bg-white flex justify-between items-center px-4 md:px-8'>
+                    <header className='sticky top-0 w-[100%] md:w-[99%] min-h-[75px] shadow-xl md:ml-[1%] bg-white flex justify-between items-center px-4 md:px-8 z-20'>
                         <motion.div className='leading-5 md:leading-7' initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} >
                             <h3 className='text-lg font-bold md:text-xl'>Welcome !</h3>
                             <p className='text-[12px] text-wrap'>{currentUser?.name}</p>
