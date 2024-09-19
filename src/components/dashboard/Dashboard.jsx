@@ -105,7 +105,7 @@ const Dashboard = () => {
         if (currentUser) {
             dispatch(fetchTasksList());
         }
-    }, [currentUser, dispatch]);
+    }, [currentUser]);
 
     return (
         <React.Fragment>
