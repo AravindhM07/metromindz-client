@@ -99,13 +99,13 @@ const Dashboard = () => {
         if (status === "logout_succeeded") {
             navigate("/login");
         }
-    }, [status]);
+    }, [status, navigate]);
 
     useEffect(() => {
         if (currentUser) {
             dispatch(fetchTasksList());
         }
-    }, [currentUser]);
+    }, [currentUser, dispatch]);
 
     return (
         <React.Fragment>
@@ -160,7 +160,7 @@ const Dashboard = () => {
                                     <motion.div className="bg-white w-[90%] md:w-[300px] py-2 px-5 rounded-md flex justify-between items-center min-h-[120px] cursor-pointer hover:bg-gray-200 transition duration-300 ease-in-out" whileHover={{ scale: 1.05 }} >
                                         <div>
                                             <p>Completed</p>
-                                            <h2 className='font-bold text-2xl'>{tasksList?.length && tasksList.filter(tasks => tasks.isCompleted)?.length || 0}</h2>
+                                            <h2 className='font-bold text-2xl'>{tasksList?.length && (tasksList.filter(tasks => tasks.isCompleted)?.length || 0)}</h2>
                                         </div>
                                         <img src={images.HandshakeIcon} alt="handshake-icon" className='aspect-square object-contain w-10 h-10' />
                                     </motion.div>
@@ -183,8 +183,8 @@ const Dashboard = () => {
                             </div>
                             <div className='relative mt-7 w-full'>
                                 <ul className='h-full min-h-10 flex gap-5 items-center bg-[#59B2E8] text-white px-6 rounded-md'>
-                                    <li className={`cursor-pointer ${!isCreateActive && "text-gray-200"}`} onClick={() => setIsCreateActive(true)}>Created ({tasksList?.length && tasksList.filter(tasks => !tasks.isCompleted)?.length || 0})</li>
-                                    <li className={`cursor-pointer ${isCreateActive && "text-gray-200"}`} onClick={() => setIsCreateActive(false)}>Completed ({tasksList?.length && tasksList.filter(tasks => tasks.isCompleted)?.length || 0})</li>
+                                    <li className={`cursor-pointer ${!isCreateActive && "text-gray-200"}`} onClick={() => setIsCreateActive(true)}>Created ({tasksList?.length && (tasksList.filter(tasks => !tasks.isCompleted)?.length || 0)})</li>
+                                    <li className={`cursor-pointer ${isCreateActive && "text-gray-200"}`} onClick={() => setIsCreateActive(false)}>Completed ({tasksList?.length && (tasksList.filter(tasks => tasks.isCompleted)?.length || 0)})</li>
                                 </ul>
                                 <div className="w-full md:w-[99%] min-h-[75px] py-8 leading-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

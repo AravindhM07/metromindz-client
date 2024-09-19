@@ -11,7 +11,7 @@ function App() {
 
   React.useEffect(() => {
     dispatch(fetchCurrentUser());
-  }, []);
+  }, [dispatch]);
 
   return (<RoutesConfig />);
 }

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { signInUser, fetchCurrentUser } from "../../redux/slices/userSlice";
+import { signInUser, fetchCurrentUser, resetState } from "../../redux/slices/userSlice";
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -137,7 +137,7 @@ const Login = () => {
                         </div>
                     </div>
                     <div className="w-full flex justify-start">
-                        <p>Don't have an account <Link to="/register" onClick={() => setErrors({})} className="text-sky-500 font-semibold">Register</Link></p>
+                        <p>Don't have an account <Link to="/register" onClick={() => { setErrors({}); dispatch(resetState()); }} className="text-sky-500 font-semibold">Register</Link></p>
                     </div>
                 </div>
             </motion.div>

@@ -3,8 +3,13 @@ import Profile from "../../assets/profile.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { createUser, fetchCurrentUser } from "../../redux/slices/userSlice";
+import { createUser, fetchCurrentUser, resetState } from "../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+
+import { storage, auth } from '../../firebase/firebaseConfig';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+
 
 const Register = () => {
     const dispatch = useDispatch();
@@ -16,6 +21,7 @@ const Register = () => {
         email: "",
         password: "",
         image: Profile,
+        imageFile: null
     });
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
@@ -31,7 +37,7 @@ const Register = () => {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setFormData(prev => ({ ...prev, image: reader.result }));
+                setFormData(prev => ({ ...prev, image: reader.result, imageFile: file }));
             };
             reader.readAsDataURL(file);
         }
@@ -51,19 +57,63 @@ const Register = () => {
         return Object.keys(newErrors).length === 0;
     }, [formData]);
 
+    const uploadFile = (path, file) => {
+        return new Promise((resolve, reject) => {
+            const timestamp = Date.now();
+            const uniqueFileName = `${timestamp}_${file.name}`;
+            const storageRef = ref(storage, `${path}/${uniqueFileName}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            uploadTask.on(
+                'state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log(`${path.charAt(0).toUpperCase() + path.slice(1)} upload progress:`, progress.toFixed(2) + '%');
+                },
+                (error) => {
+                    reject(new Error(`Upload failed: ${error.message}`));
+                },
+                async () => {
+                    try {
+                        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                        resolve(downloadURL);
+                    } catch (error) {
+                        reject(new Error(`Error getting download URL: ${error.message}`));
+                    }
+                }
+            );
+        });
+    };
+
+
     const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
         if (!validateForm()) return;
         setLoading(true);
         setMessage("");
 
+        const user = auth.currentUser;
+        const email = process.env.REACT_APP_FIREBASE_EMAIL;
+        const password = process.env.REACT_APP_FIREBASE_PASSWORD;
+
         try {
-            await dispatch(createUser({
+            if (!user) {
+                console.log('Firebase sign-in initiated!', email, password);
+                const signIn = await signInWithEmailAndPassword(auth, email, password);
+                if (!signIn.user) throw new Error('Sign-in failed');
+            }
+
+            const imageUploadTask = formData.imageFile ? uploadFile('thumbnails', formData.imageFile) : Promise.resolve(null);
+
+            const [imageDownloadURL] = await Promise.all([imageUploadTask]);
+
+            const updatedDetails = {
                 name: formData.name,
                 email: formData.email,
                 password: formData.password,
-                image: formData.image,
-            }));
+                image: imageDownloadURL,
+            };
+            await dispatch(createUser(updatedDetails));
             await dispatch(fetchCurrentUser());
             navigate("/");
         } catch (error) {
@@ -147,7 +197,7 @@ const Register = () => {
                         </div>
                     </div>
                     <div className="w-full flex justify-center">
-                        <p className="w-full">Already have an account <Link to="/login" onClick={() => setErrors({})} className="text-sky-500 font-semibold">Login</Link> </p>
+                        <p className="w-full">Already have an account <Link to="/login" onClick={() => { setErrors({}); dispatch(resetState()) }} className="text-sky-500 font-semibold">Login</Link> </p>
                     </div>
                 </div>
             </motion.div>
