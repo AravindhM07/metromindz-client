@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -6,12 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { signInUser, fetchCurrentUser } from "../../redux/slices/userSlice";
 
 const Login = () => {
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const apiStatus = useSelector(state => state.user.status);
-    const apiError = useSelector(state => state.user.error);
-    const currentUser = useSelector(state => state.user.currentUser);
+
+    const { status: apiStatus, error: apiError, currentUser } = useSelector(state => state.user);
+
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -20,10 +19,10 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
-    const handleInputChange = (e) => {
+    const handleInputChange = useCallback((e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+        setFormData(prevData => ({ ...prevData, [name]: value }));
+    }, []);
 
     const validateForm = () => {
         const newErrors = {};
@@ -37,6 +36,12 @@ const Login = () => {
         return Object.keys(newErrors).length === 0;
     };
 
+    const handleApiErrors = useCallback(() => {
+        if (apiStatus === "auth_failed") {
+            setErrors({ api: apiError?.message || "An error occurred" });
+        }
+    }, [apiStatus, apiError]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validateForm()) return;
@@ -44,10 +49,7 @@ const Login = () => {
         setMessage("");
 
         try {
-            await dispatch(signInUser({
-                email: formData.email,
-                password: formData.password
-            }));
+            await dispatch(signInUser(formData));
         } catch (error) {
             setErrors({ api: error.response?.data?.message || "An error occurred" });
         } finally {
@@ -59,16 +61,16 @@ const Login = () => {
         if (apiStatus === "signin_succeeded") {
             dispatch(fetchCurrentUser());
             navigate("/");
-        } else if (apiStatus === "auth_failed") {
-            setErrors({ api: apiError?.message });
+        } else {
+            handleApiErrors();
         }
-    }, [apiStatus]);
+    }, [apiStatus, handleApiErrors, dispatch, navigate]);
 
     useEffect(() => {
         if (currentUser) {
             navigate("/");
         }
-    }, [currentUser]);
+    }, [currentUser, navigate]);
 
     return (
         <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
@@ -77,7 +79,7 @@ const Login = () => {
                 <h1 className="absolute md:hidden -top-20 text-center w-full font-bold text-2xl text-[#464255]">Task Management Hub</h1>
                 <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20 mx-2 md:mx-0 rounded-md">
                     <div className="max-w-md mx-auto">
-                        <div> <h1 className="text-2xl font-semibold">Login</h1> </div>
+                        <h1 className="text-2xl font-semibold">Login</h1>
                         {message && <p className="text-green-500">{message}</p>}
                         {errors.api && <p className="text-red-500">{errors.api}</p>}
                         <div className="divide-y divide-gray-200">
