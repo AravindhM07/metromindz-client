@@ -74,7 +74,7 @@ const AddTasks = ({ closeModal, selectedCard }) => {
     }, [selectedCard]);
 
     return (
-        <div className='flex justify-center items-center fixed w-full h-full top-0 left-0 bg-[#ffffffa3] z-10 backdrop-blur-0 text-[#464255]'>
+        <div className='flex justify-center items-center fixed w-full h-full top-0 left-0 bg-[#ffffffa3] z-30 backdrop-blur-0 text-[#464255]'>
             <div className='absolute w-[90%] h-auto bg-white shadow rounded-md p-7 overflow-y-auto'>
                 <div className='flex justify-between items-center'>
                     <h2 className='font-bold text-lg text-[#0000009c]'>{Object.keys(selectedCard).length ? "Update" : "Create"} Task</h2>
