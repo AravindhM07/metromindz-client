@@ -83,7 +83,7 @@ const Dashboard = () => {
                 {isOpen && (
                     <ul className="absolute right-0 mt-2 w-[100px] bg-white border border-gray-200 rounded-lg shadow-lg text-gray-700" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
                         <li className="hover:bg-gray-100 py-1 px-3 cursor-pointer text-[12px]" onClick={() => { setSelectedCard(taskData); setIsTaskModalOpened(true) }}>Edit</li>
-                        <li className="hover:bg-gray-100 py-1 px-3 cursor-pointer text-[12px]" onClick={async () => { await dispatch(deleteRequest(taskData?._id)); dispatch(fetchTasksList()) }}>Delete</li>
+                        <li className="hover:bg-gray-100 py-1 px-3 cursor-pointer text-[12px]" onClick={async () => { await dispatch(deleteRequest(taskData?._id)); await dispatch(fetchTasksList()) }}>Delete</li>
                     </ul>
                 )}
             </div>

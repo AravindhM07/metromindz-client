@@ -73,7 +73,6 @@ const userSlice = createSlice({
             })
             .addCase(deleteRequest.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.tasksList = action.payload;
             })
             .addCase(deleteRequest.rejected, (state, action) => {
                 state.status = 'auth_failed';
