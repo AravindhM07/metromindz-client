@@ -33,13 +33,13 @@ const AddTasks = ({ closeModal, selectedCard }) => {
                 ...taskDetails
             };
             await dispatch(handleTasks(payload));
+            await dispatch(fetchTasksList());
             setTaskDetails({
                 title: '',
                 details: '',
                 date: '',
                 priority: 'Medium',
             });
-            dispatch(fetchTasksList());
             closeModal();
         } catch (error) {
             console.error('Error creating task:', error);
